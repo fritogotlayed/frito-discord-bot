@@ -1,27 +1,17 @@
 module.exports = {
     echo: function (args) {
-        args.bot.sendMessage({
-            to: args.channelID,
-            message: args.message
-        });
+        args.event.channel.send(args.message);
     },
 
     roll: function (args) {
         try {
-
             let messages = createRollMessages(args);
-
-            args.bot.sendMessage({
-                to: args.channelID,
-                message: messages.join("\n")
-            });
-
+            args.event.channel.send(messages.join("\n"));
         } catch (e) {
             let errorId = guid();
-            args.bot.sendMessage({
-                to: args.channelID,
-                message: "I had a problem figuring out what to do. Ask a mod to check the logs with this error ID: " + errorId
-            });
+            args.event.channel.send(
+                "I had a problem figuring out what to do. Ask a mod to check the logs with this error ID: " + errorId
+            );
             console.log("ERROR: " + errorId);
             console.log(e);
         }
@@ -37,13 +27,8 @@ function createRollMessages(args){
     // create a default specification roll if nothing sent to us
 
     if (args.message.trim().length === 0) {
-        let spec = rollSpecification('');
-        let rollResults = rollDice(spec['numDie'], spec['dieSize']);
-        let message = rollResultMessage(spec, rollResults);
-
-        messages.push(message);
-    }
-    else {
+        separateDieRolls = ['1d6'];
+    } else {
         separateDieRolls = args.message.split(/[ ,]+/); // split by comma or whitespace
     }
 
@@ -85,11 +70,11 @@ function rollResultMessage(spec, rolls){
     if (spec['prefix'] === 'w' || spec['prefix'] === 'b') {
         message = message + rolls.join(', ') + ' -> ';
         if (spec['prefix'] === 'b'){
-            message = message + 'best: ' + best;
+            message = message + '  best: ' + best;
             baseValue = best;
         }
         else {
-            message = message + 'worst: ' + worst;
+            message = message + '  worst: ' + worst;
             baseValue = worst;
         }
     }
@@ -109,7 +94,7 @@ function rollResultMessage(spec, rolls){
             modified = 0;
         }
 
-        message = message + ' modified: ' + modified;
+        message = message + '  modified: ' + modified;
     }
 
     return message;
@@ -123,19 +108,14 @@ function rollSpecification(roll) {
 
     //a default die roll spec 1d6 with no modifier and no worst/best option
     
-    let prefix = null;
-    let numDie = 1;
-    let dieSize = 6;
-    let modifier = null;
-    let modAmount = 0;
-
-    let spec = {};
-    spec['prefix'] = prefix;
-    spec['numDie'] = numDie;
-    spec['dieSize'] = dieSize;
-    spec['modifier'] = modifier;
-    spec['modAmount'] = modAmount;  
-    spec['desc'] = "";
+    let spec = {
+        "prefix": null,
+        "numDie": 1,
+        "dieSize": 6,
+        "modifier": null,
+        "modAmount": null,
+        "desc": ""
+    };
 
     // Pattern for getting a single roll information;
     // Default is 1d6
@@ -153,17 +133,18 @@ function rollSpecification(roll) {
        rollInfo = diePattern.exec(roll);
     }
    
+    let normalize = function(spec, key, data, shouldLowCase){
+        if (typeof data != 'undefined'){
+            spec[key] = shouldLowCase ? data.toLowerCase() : data;
+        }
+    };
+   
     if (rollInfo.length > 1 ) {
-
-        spec['prefix'] = (typeof rollInfo[1] != 'undefined') ? rollInfo[1].toLowerCase() : prefix;
-
-        spec['numDie'] = (typeof rollInfo[2] != 'undefined') ? rollInfo[2] : numDie;
-
-        spec['dieSize'] = (typeof rollInfo[3] != 'undefined') ? rollInfo[3] : dieSize;
-
-        spec['modifier'] = (typeof rollInfo[4] != 'undefined') ? rollInfo[4] : modifier;
-
-        spec['modAmount'] = (typeof rollInfo[5] != 'undefined') ? rollInfo[5] : modAmount;
+        normalize(spec, 'prefix', rollInfo[1], true);
+        normalize(spec, 'numDie', rollInfo[2], false);
+        normalize(spec, 'dieSize', rollInfo[3], false);
+        normalize(spec, 'modifier', rollInfo[4], false);
+        normalize(spec, 'modAmount', rollInfo[5], false);
     }
 
 

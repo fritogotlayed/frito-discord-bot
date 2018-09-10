@@ -1,7 +1,9 @@
 {
   "name": "frito-discord-bot",
   "version": "0.0.1",
-  "description": "https://github.com/fritogotlayed/frito-discord-bot",
+  "description": "A simple bot for Frito's discord server",
+  "repository": "https://github.com/fritogotlayed/frito-discord-bot",
+  "license": "MIT",
   "main": "bot.js",
   "scripts": {
     "start": "node ./src/bot.js",
@@ -11,7 +13,7 @@
   },
   "author": "Frito",
   "dependencies": {
-    "discord.io": "^2.5.3",
+    "discord.js": "^11.4.2",
     "winston": "^3.0.0"
   },
   "devDependencies": {

@@ -1,32 +1,39 @@
+/* eslint no-undef: "off"*/
 const assert = require("assert");
 const sinon = require("sinon");
 
 const handlers = require("../src/bot-command-handlers.js");
 
 describe("bot-command-handlers", function() {
+
+    beforeEach(function(){
+        this.sandbox = sinon.createSandbox();
+    });
+
+    afterEach(function(){
+        this.sandbox.restore();
+    });
+
     describe("#echo()", function() {
         it("Should emit the exact message to the channel", function() {
             // Arrange
-            let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: this.sandbox.stub()
+                },
             };
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "sample message"
             };
             handlers.echo(args);
 
             // Assert
-            assert(sendMessageStub.called);
-            let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "sample message");
+            assert(event.channel.send.called);
+            let callArgs = event.channel.send.getCall(0).args[0];
+            assert.equal(callArgs, "sample message");
         });
     });
 
@@ -34,8 +41,10 @@ describe("bot-command-handlers", function() {
         it("Should emit correctly for single roll", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -43,10 +52,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d6"
             };
             handlers.roll(args);
@@ -54,15 +60,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d6: 2 + 5 = 7");
+            assert.equal(callArgs, "2d6: 2 + 5 = 7");
         });
 
         it("Should emit correctly for multiple roll", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -72,10 +79,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d6 2d10"
             };
             handlers.roll(args);
@@ -83,15 +87,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d6: 2 + 5 = 7\n2d10: 10 + 4 = 14");
+            assert.equal(callArgs, "2d6: 2 + 5 = 7\n2d10: 10 + 4 = 14");
         });
 
         it("Should emit correctly for single roll of 2d0", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -99,10 +104,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d0"
             };
             handlers.roll(args);
@@ -110,15 +112,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d0: 0 + 0 = 0");
+            assert.equal(callArgs, "2d0: 0 + 0 = 0");
         });
 
         it("Should emit correctly for single roll of 2d1", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -126,10 +129,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d1"
             };
             handlers.roll(args);
@@ -137,15 +137,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d1: 1 + 1 = 2");
+            assert.equal(callArgs, "2d1: 1 + 1 = 2");
         });
 
         it("Should default to 1d6 roll with empty arguments", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -153,10 +154,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: ""
             };
             handlers.roll(args);
@@ -164,15 +162,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "1d6: 2 = 2");
+            assert.equal(callArgs, "1d6: 2 = 2");
         });
 
         it("Should assume one when number of die not specified", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -180,10 +179,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "d6"
             };
             handlers.roll(args);
@@ -191,15 +187,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "1d6: 2 = 2");
+            assert.equal(callArgs, "1d6: 2 = 2");
         });
 
         it("Should assume 6 when die type not specified", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -207,10 +204,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d"
             };
             handlers.roll(args);
@@ -218,15 +212,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d6: 2 + 5 = 7");
+            assert.equal(callArgs, "2d6: 2 + 5 = 7");
         });
 
         it("Should emit correctly when worst scenario specified", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.937548);
@@ -234,10 +229,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "w2d10"
             };
             handlers.roll(args);
@@ -245,15 +237,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "w[2d10]: 10, 4 -> worst: 4");
+            assert.equal(callArgs, "w[2d10]: 10, 4 ->   worst: 4");
         });
 
         it("Should emit correctly when best scenario specified", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.937548);
@@ -261,10 +254,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "b2d10"
             };
             handlers.roll(args);
@@ -272,15 +262,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "b[2d10]: 10, 4 -> best: 10");
+            assert.equal(callArgs, "b[2d10]: 10, 4 ->   best: 10");
         });
 
         it("Should emit correctly when modifier is specified", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.937548);
@@ -288,10 +279,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "2d10+2"
             };
             handlers.roll(args);
@@ -299,15 +287,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "2d10+2: 10 + 4 = 14 modified: 16");
+            assert.equal(callArgs, "2d10+2: 10 + 4 = 14  modified: 16");
         });
 
         it("Should emit correctly when modifier is below 0", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let randomStub = this.sandbox.stub(Math, "random");
             randomStub.onCall(0).returns(0.233238);
@@ -315,10 +304,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: "w2d6-3"
             };
             handlers.roll(args);
@@ -326,15 +312,16 @@ describe("bot-command-handlers", function() {
             // Assert
             assert(sendMessageStub.called);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
-            assert.equal(callArgs.message, "w[2d6]-3: 2, 5 -> worst: 2 modified: 0");
+            assert.equal(callArgs, "w[2d6]-3: 2, 5 ->   worst: 2  modified: 0");
         });
 
-        it("Should emit error message when an error occurrs.", function() {
+        it("Should emit error message when an error occurs.", function() {
             // Arrange
             let sendMessageStub = this.sandbox.stub();
-            let bot = {
-                sendMessage: sendMessageStub
+            let event = {
+                channel: {
+                    send: sendMessageStub
+                }
             };
             let consoleStub = this.sandbox.stub(console);
             let randomStub = this.sandbox.stub(Math, "random");
@@ -349,10 +336,7 @@ describe("bot-command-handlers", function() {
 
             // Act
             let args = {
-                bot: bot,
-                user: "TestUser",
-                userID: 1234,
-                channelID: 3456,
+                event: event,
                 message: 12
             };
             handlers.roll(args);
@@ -361,9 +345,8 @@ describe("bot-command-handlers", function() {
             assert.equal(sendMessageStub.called, true);
             assert.equal(consoleStub.log.callCount, 2);
             let callArgs = sendMessageStub.getCall(0).args[0];
-            assert.equal(callArgs.to, 3456);
             assert.equal(
-                callArgs.message.startsWith("I had a problem figuring out what to do. Ask a mod to check the logs with this error ID: "),
+                callArgs.startsWith("I had a problem figuring out what to do. Ask a mod to check the logs with this error ID: "),
                 true);
         });
     });
