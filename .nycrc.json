@@ -1,0 +1,23 @@
+{
+  "check-coverage": true,
+  "per-file": true,
+  "lines": 80,
+  "statements": 80,
+  "functions": 80,
+  "branches": 80,
+  "include": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "src/**/*.test.js"
+  ],
+  "ignore-class-method": "methodToIgnore",
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+  "require": [],
+  "extension": [],
+  "cache": true,
+  "all": true
+}

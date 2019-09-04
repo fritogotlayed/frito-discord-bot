@@ -1,20 +1,20 @@
-let Discord = require("discord.js");
+const Discord = require('discord.js');
 
-let logger = require("winston");
-let auth = require("./config/auth.json");
-let botEvents = require("./bot-events.js");
+const logger = require('winston');
+const auth = require('./config/auth.json');
+const botEvents = require('./bot-events.js');
 
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
+logger.add(new logger.transports.Console(), {
+  colorize: true,
 });
-logger.level = "debug";
+logger.level = 'debug';
 
 
 // Initialize Discord Bot
-let client = new Discord.Client();
+const client = new Discord.Client();
 
 botEvents.wireEvents(client);
 
