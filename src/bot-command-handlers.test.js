@@ -2,7 +2,7 @@
 const assert = require("assert");
 const sinon = require("sinon");
 
-const handlers = require("../src/bot-command-handlers.js");
+const handlers = require("./bot-command-handlers");
 
 describe("bot-command-handlers", function() {
 

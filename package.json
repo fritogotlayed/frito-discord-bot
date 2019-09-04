@@ -9,7 +9,8 @@
     "start": "node ./src/bot.js",
     "test": "NODE_ENV=test mocha",
     "test-cov": "NODE_ENV=test nyc mocha",
-    "lint": "eslint 'src/**'"
+    "lint": "eslint 'src/**'",
+    "update:packages": "ncu"
   },
   "author": "Frito",
   "dependencies": {
@@ -19,12 +20,13 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "co-mocha": "^1.2.2",
-    "eslint": "^5.16.0",
+    "eslint": "^6.3.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.0",
+    "npm-check-updates": "^3.1.21",
     "nyc": "^14.1.1",
-    "sinon": "^6.3.5",
+    "sinon": "^7.4.2",
     "sinon-chai": "^3.3.0"
   }
 }

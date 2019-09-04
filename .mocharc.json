@@ -3,7 +3,7 @@
   "extension": ["js"],
   "opts": "./test/mocha.opts",
   "package": "./package.json",
-  "reporter": "min",
+  "reporter": "dot",
   "spec": "./src/**/*.test.js",
   "slow": 75,
   "timeout": 2000,
