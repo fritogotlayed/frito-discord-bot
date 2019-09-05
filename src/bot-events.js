@@ -1,8 +1,14 @@
-const logger = require('winston');
+const { Client } = require('discord.js'); /* eslint-disable-line no-unused-vars */
+
 const auth = require('./config/auth.json');
 const handlers = require('./commands');
 
-function wireEvents(client) {
+/**
+ * Wires up all the appropriate events for the discord client.
+ * @param {Client} client the discord client object
+ */
+function wireEvents(client, logger) {
+  /* https://discord.js.org/#/docs/main/stable/general/welcome */
   client.on('ready', () => {
     logger.info('Connected');
     logger.info(`Logged in as: ${client.username}`);
@@ -22,37 +28,12 @@ function wireEvents(client) {
         message: args.join(' '),
       };
 
-      switch (cmd) {
-        case 'ping':
-          event.channel.sendMessage('Pong!');
-          break;
-        default:
-          if (handlers[cmd]) {
-            handlers[cmd](helperArgs);
-          } else {
-            logger.warn(`Unknown command: ${event.content}`);
-          }
-          break;
+      if (handlers[cmd]) {
+        handlers[cmd](helperArgs);
+      } else {
+        logger.warn(`Unknown command: ${event.content}`);
       }
     }
-  });
-
-  client.on('presence', (user, userID, status, game, event) => {
-    logger.silly({
-      user,
-      userID,
-      status,
-      game,
-      event,
-    });
-  });
-
-  client.on('any', (event) => {
-    logger.verbose(event);
-  });
-
-  client.on('debug', (event) => {
-    logger.verbose(event);
   });
 
   client.on('disconnect', () => {
