@@ -128,6 +128,32 @@ describe('botEvents', () => {
         chai.expect(testEvent.channel.send.callCount).to.be.equal(1);
         chai.expect(testEvent.channel.send.getCalls()[0].args).to.be.eql(['arg1 arg2 arg3']);
       });
+
+      it('calls configured handler for command specific help', () => {
+        // Arrange
+        const testEvent = buildFakeEvent('!echo help');
+        botEvents.wireEvents(fakeClient, fakeLogger);
+
+        // Act
+        fakeClient.fireEvent('message', testEvent);
+
+        // Assert
+        chai.expect(testEvent.channel.send.callCount).to.be.equal(1);
+        chai.expect(testEvent.channel.send.getCalls()[0].args).to.be.eql(['Echo\'s the input back to the channel.']);
+      });
+
+      it('emits help message when message is !help', () => {
+        // Arrange
+        const testEvent = buildFakeEvent('!help');
+        botEvents.wireEvents(fakeClient, fakeLogger);
+
+        // Act
+        fakeClient.fireEvent('message', testEvent);
+
+        // Assert
+        chai.expect(testEvent.channel.send.callCount).to.be.equal(1);
+        chai.expect(testEvent.channel.send.getCalls()[0].args[0].startsWith('Try "!{command} help" to get more information on a specific command. Available commands:')).to.be.equal(true);
+      });
     });
 
     describe('disconnect', () => {

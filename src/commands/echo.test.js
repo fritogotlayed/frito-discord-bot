@@ -27,12 +27,35 @@ describe('commands', () => {
         event,
         message: 'sample message',
       };
-      echo(args);
+      echo.handler(args);
 
       // Assert
       assert(event.channel.send.called);
       const callArgs = sendStub.getCall(0).args[0];
       assert.equal(callArgs, 'sample message');
+    });
+  });
+
+  describe('help', () => {
+    it('Should emit the help text to channel', () => {
+      // Arrange
+      const sendStub = this.sandbox.stub();
+      const event = {
+        channel: {
+          send: sendStub,
+        },
+      };
+
+      // Act
+      const args = {
+        event,
+      };
+      echo.help(args);
+
+      // Assert
+      assert(event.channel.send.called);
+      const callArgs = sendStub.getCall(0).args[0];
+      assert.equal(callArgs, 'Echo\'s the input back to the channel.');
     });
   });
 });

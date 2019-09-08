@@ -168,7 +168,7 @@ function guid() {
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
-module.exports = function roll(args) {
+function handler(args) {
   try {
     const messages = createRollMessages(args);
     args.event.channel.send(messages.join('\n'));
@@ -180,4 +180,13 @@ module.exports = function roll(args) {
     logger.warn(`ERROR: ${errorId}`);
     logger.warn(e);
   }
+}
+
+function help(args) {
+  args.event.channel.send('Rolls virtual dice. Defaults to 1d6. Use "w" or "b" to capture the worst or best of a roll group. Modifiers may also be placed on a roll group. Ex: 2d10, w[4d8], b[2d6]+2');
+}
+
+module.exports = {
+  help,
+  handler,
 };

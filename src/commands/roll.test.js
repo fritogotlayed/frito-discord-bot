@@ -31,7 +31,7 @@ describe('commands', () => {
         event,
         message: '2d6',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -58,7 +58,7 @@ describe('commands', () => {
         event,
         message: '2d6 2d10',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -83,7 +83,7 @@ describe('commands', () => {
         event,
         message: '2d0',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -108,7 +108,7 @@ describe('commands', () => {
         event,
         message: '2d1',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -133,7 +133,7 @@ describe('commands', () => {
         event,
         message: '',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -158,7 +158,7 @@ describe('commands', () => {
         event,
         message: 'd6',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -183,7 +183,7 @@ describe('commands', () => {
         event,
         message: '2d',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -208,7 +208,7 @@ describe('commands', () => {
         event,
         message: 'w2d10',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -233,7 +233,7 @@ describe('commands', () => {
         event,
         message: 'b2d10',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -258,7 +258,7 @@ describe('commands', () => {
         event,
         message: '2d10+2',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -283,7 +283,7 @@ describe('commands', () => {
         event,
         message: 'w2d6-3',
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert(sendMessageStub.called);
@@ -315,7 +315,7 @@ describe('commands', () => {
         event,
         message: 12,
       };
-      roll(args);
+      roll.handler(args);
 
       // Assert
       assert.equal(sendMessageStub.called, true);
@@ -325,6 +325,29 @@ describe('commands', () => {
         callArgs.startsWith('I had a problem figuring out what to do. Ask a mod to check the logs with this error ID: '),
         true,
       );
+    });
+  });
+
+  describe('help', () => {
+    it('Should emit the help text to channel', () => {
+      // Arrange
+      const sendStub = this.sandbox.stub();
+      const event = {
+        channel: {
+          send: sendStub,
+        },
+      };
+
+      // Act
+      const args = {
+        event,
+      };
+      roll.help(args);
+
+      // Assert
+      assert(event.channel.send.called);
+      const callArgs = sendStub.getCall(0).args[0];
+      assert.equal(callArgs, 'Rolls virtual dice. Defaults to 1d6. Use "w" or "b" to capture the worst or best of a roll group. Modifiers may also be placed on a roll group. Ex: 2d10, w[4d8], b[2d6]+2');
     });
   });
 });
