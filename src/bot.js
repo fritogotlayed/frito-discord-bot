@@ -1,7 +1,6 @@
 const discord = require('discord.js');
 
 const logger = require('winston');
-const auth = require('./config/auth.json');
 const botEvents = require('./bot-events.js');
 
 
@@ -19,7 +18,7 @@ function startBot() {
 
   botEvents.wireEvents(client, logger);
 
-  client.login(auth.token);
+  client.login(process.env.AUTH_TOKEN);
 }
 
 /* istanbul ignore if */

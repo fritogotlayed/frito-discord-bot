@@ -1,6 +1,5 @@
 const { Client } = require('discord.js'); /* eslint-disable-line no-unused-vars */
 
-const auth = require('./config/auth.json');
 const handlers = require('./commands');
 
 function invokeHandler(cmd, event, logger) {
@@ -61,7 +60,7 @@ function wireEvents(client, logger) {
   client.on('disconnect', () => {
     logger.warn('Bot disconnected.  Reconnecting...');
     // HACK: until docker / env stuff is in place.
-    client.login(auth.token); // Auto reconnect
+    client.login(process.env.AUTH_TOKEN); // Auto reconnect
   });
 }
 
