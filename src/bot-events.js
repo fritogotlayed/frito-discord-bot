@@ -35,8 +35,8 @@ function wireEvents(client, logger) {
   /* https://discord.js.org/#/docs/main/stable/general/welcome */
   client.on('ready', () => {
     logger.info('Connected');
-    logger.info(`Logged in as: ${client.username}`);
-    logger.debug(`${client.username} - (${client.id})`);
+    logger.info(`Logged in as: ${client.user.username}`);
+    logger.debug(`${client.user.username} - (${client.user.id})`);
   });
 
   client.on('message', (event) => {

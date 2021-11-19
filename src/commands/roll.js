@@ -171,7 +171,7 @@ function guid() {
 function handler(args) {
   try {
     const messages = createRollMessages(args);
-    args.event.channel.send(messages.join('\n'));
+    args.event.channel.send(messages.join('\n')); // TODO: find "messageCreate" and use that instead.
   } catch (e) {
     const errorId = guid();
     args.event.channel.send(

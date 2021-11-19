@@ -9,3 +9,6 @@ coverage/
 # Project files
 auth.json
 *.log
+
+# User environment
+.envrc

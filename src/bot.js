@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 
 const logger = require('winston');
-const botEvents = require('./bot-events.js');
-
+const botEvents = require('./bot-events');
+const appShutdown = require('./app_shutdown');
 
 function startBot() {
   // Configure logger settings
@@ -12,9 +12,16 @@ function startBot() {
   });
   logger.level = 'debug';
 
-
   // Initialize Discord Bot
-  const client = new discord.Client();
+  // https://discord.com/developers/docs/topics/gateway#list-of-intents
+  const client = new discord.Client({
+    intents: [
+      discord.Intents.FLAGS.GUILDS,
+      discord.Intents.FLAGS.GUILD_MESSAGES,
+      // discord.Intents.FLAGS.GUILD_INTEGRATIONS,
+    ],
+  });
+  appShutdown.wire(() => client.destroy());
 
   botEvents.wireEvents(client, logger);
 
