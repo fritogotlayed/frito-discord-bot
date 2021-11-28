@@ -1,0 +1,16 @@
+{
+  "name": "frito-discord-bot-functions",
+  "version": "0.0.1",
+  "description": "A collection of mdsCloud functions for Frito's discord bot",
+  "repository": "https://github.com/fritogotlayed/frito-discord-bot",
+  "license": "MIT",
+  "main": "bot.js",
+  "scripts": {},
+  "author": "Frito",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "@maddonkeysoftware/mds-cloud-sdk-node": "^0.2.6",
+    "mongodb": "^4.2.0"
+  },
+  "devDependencies": {}
+}

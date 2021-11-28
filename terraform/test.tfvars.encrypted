@@ -1,0 +1,18 @@
+{
+  "agent": "mds cli",
+  "mode": "ini",
+  "data": {
+    "identity_url           ": "U2FsdGVkX1+TmxHeKp40IS5ckXnnqjVvFfTriHNr5SAVQqw7Cy5eBZULJT5PrX1S",
+    "qs_url                 ": "U2FsdGVkX18cxdYwr9cVr1iCIfDy2miXZNAfVSbIh+SmKe8l8pc11ke1T8WF+Okn",
+    "fs_url                 ": "U2FsdGVkX19z0xrX8aovXnwaPKQK6i4EK1rmdEGHeAKG9mfFRGOGkG3Cv+5plVC0",
+    "sf_url                 ": "U2FsdGVkX1+6bE//in2MOoDnrgfv0jV6M6q7E7rQ+/YcQhY0kBDrpyjexDFLnPR5",
+    "sm_url                 ": "U2FsdGVkX1/+qiHrD/msy28+guR+AsHyImo0iPSkAo3uPibHdYC3aA4dt3HGXUPx",
+    "account                ": "U2FsdGVkX18Ac5Q6VXT14nyEphfxVX6k2qHoapbC2Ps=",
+    "user_id                ": "U2FsdGVkX19ch+JU1lMvGnXNIx0p/MJvldxFz0uPw9M=",
+    "password               ": "U2FsdGVkX1+XB+hCqJeyNyOIS7tZZx3kpev6naND3y8=",
+    "allow_self_signed_cert ": "U2FsdGVkX1+fUQDCTNDpMD3V82YK0RKUfxB+AbxPJ+U=",
+    "steam_api_key          ": "U2FsdGVkX1+r392qmVife9XdMGwmRfXUhTV4fSw7oawPhTwvwfBdgsqBVyKQH81z8bieUgvH50vZxmYQXA2g8A==",
+    "mongo_user             ": "U2FsdGVkX188QrYpVwi3jDju//2OQbPl1x3Fhh9LTTk=",
+    "mongo_pass             ": "U2FsdGVkX1+kXUxItJQl2GgR/UOdyLATZaC5Mb0avvQ="
+  }
+}

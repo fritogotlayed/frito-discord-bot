@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+# NOTE: This file is for mdsCloudInABox local testing
+# NOTE: We remove the cache since at this moment the mds CLI is not smart enough to realize
+# when cached credentials are bad.
+rm -f /home/malline/.mds/cache
+
+curl --insecure --request POST 'https://localhost:8081/v1/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "userId": "myUser",
+    "email": "no@no.com",
+    "password": "password",
+    "friendlyName": "Local Developer",
+    "accountName": "Local Development Account"
+}'
+
+mds fs create --env local discord-bot-tf-state

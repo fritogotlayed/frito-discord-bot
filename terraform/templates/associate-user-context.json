@@ -1,0 +1,4 @@
+{
+    "mongoConnString": "${mongo_conn_string}",
+    "steamApiKey": "${steam_api_key}"
+}

@@ -1,0 +1,23 @@
+#! /usr/bin/env bash
+
+# NOTE: Using exported variables here so they are not in main.tf
+# See .envrc direnv file
+
+START_DIR=$(pwd)
+rm -rf ./terraform/app.zip
+cd ./functions
+zip -r ./app.zip . -q
+mv ./app.zip "$START_DIR/terraform/"
+cd $START_DIR
+
+if [ ! -f "./terraform/test.tfvars" ]; then
+    echo 'Decrypting credentials file'
+    mds decrypt --out-file ./terraform/test.tfvars ./terraform/test.tfvars.encrypted
+else
+    echo 'Decrypted file already exists. Bypassing...'
+fi
+
+echo 'Starting terraform deployment'
+rm -rf ./terraform/.terraform/ ./terraform/.terraform.lock.hcl
+terraform -chdir=./terraform init
+terraform -chdir=./terraform apply --auto-approve --var-file=./test.tfvars

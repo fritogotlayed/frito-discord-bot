@@ -1,0 +1,80 @@
+{
+  "Name": "Sample",
+  "StartAt": "One",
+  "States": {
+    "One": {
+      "Type": "Task",
+      "Resource": "${sf_one_orid}",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Fail"
+        }
+      ],
+      "Next": "CheckShouldFail"
+    },
+    "CheckShouldFail": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.shouldFail",
+          "BooleanEquals": true,
+          "Next": "Fail"
+        }
+      ],
+      "Default": "Two"
+    },
+    "Two": {
+      "Type": "Task",
+      "Resource": "${sf_two_orid}",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Fail"
+        }
+      ],
+      "Next": "DelayTest"
+    },
+    "DelayTest": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Three"
+    },
+    "Three": {
+      "Type": "Task",
+      "Resource": "${sf_three_orid}",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Fail"
+        }
+      ],
+      "Next": "Success"
+    },
+    "Fail": {
+      "Type": "Task",
+      "Resource": "${sf_failed_orid}",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Fail"
+        }
+      ],
+      "Next": "FailWorkflow"
+    },
+    "FailWorkflow": {
+      "Type": "Fail"
+    },
+    "Success": {
+      "Type": "Succeed"
+    }
+  }
+}

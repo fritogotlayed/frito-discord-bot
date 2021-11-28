@@ -7,6 +7,7 @@
   "main": "bot.js",
   "scripts": {
     "start": "node --trace-deprecation ./src/bot.js",
+    "start:debug": "node --inspect --trace-deprecation ./src/bot.js",
     "test": "NODE_ENV=test mocha",
     "test-cov": "NODE_ENV=test nyc mocha",
     "lint": "eslint 'src/**'",
@@ -14,7 +15,11 @@
   },
   "author": "Frito",
   "dependencies": {
+    "@maddonkeysoftware/mds-cloud-sdk-node": "^0.2.6",
+    "axios": "^0.24.0",
     "discord.js": "^13.3.1",
+    "lodash": "^4.17.21",
+    "mongodb": "^4.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

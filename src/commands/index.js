@@ -8,11 +8,13 @@ function requireDir() {
    */
   fs.readdirSync(__dirname).forEach((library) => {
     const isLibrary = library.split('.').length > 0 && library.split('.')[1] === 'js';
-    const libName = library.split('.')[0].toLowerCase();
+    const libName = library.split('.')[0];
+    const splitLibName = libName.split(/(?=[A-Z])/);
+    const commandName = splitLibName.join('-').toLowerCase();
 
     if (isLibrary && libName !== 'index') {
       /* eslint-disable-next-line import/no-dynamic-require, global-require */
-      commands[libName] = require(`./${libName}`);
+      commands[commandName] = require(`./${libName}`);
     }
   });
 

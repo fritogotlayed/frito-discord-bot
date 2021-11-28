@@ -12,3 +12,8 @@ auth.json
 
 # User environment
 .envrc
+
+terraform/.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.zip
