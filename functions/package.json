@@ -9,6 +9,7 @@
   "author": "Frito",
   "dependencies": {
     "axios": "^0.24.0",
+    "lodash": "^4.17.21",
     "@maddonkeysoftware/mds-cloud-sdk-node": "^0.2.6",
     "mongodb": "^4.2.0"
   },
